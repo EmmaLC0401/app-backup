@@ -6,10 +6,11 @@
 - Consulta `.github/agents/app-respaldo-guide.agent.md` para análisis de configuración y puesta en marcha.
 
 ## Configuración y ejecución
-- La API requiere que exista una base de datos MySQL y que estén definidas las variables `DB_HOST`, `DB_USER`, `DB_PASSWORD` y `DB_NAME`. No hay un archivo de configuración de ejemplo; no inventes valores ni incluyas credenciales reales en el repositorio.
+- La API requiere que exista una base de datos MySQL y que estén definidas las variables `DB_HOST`, `DB_USER`, `DB_PASSWORD` y `DB_NAME`. `.env.example` contiene solo valores ficticios; no inventes credenciales reales ni las incluyas en el repositorio.
 - Desde `api/`, instala dependencias con `python -m pip install -r requirements.txt` y ejecuta `python app.py` después de configurar esas variables. El servidor escucha en el puerto `5000`.
 - La aplicación crea la tabla `tareas` al listar o crear tareas, pero no crea la base de datos.
+- Para el entorno local con Docker, consulta `README.md`: copia `.env.example` a `.env`, cambia las contraseñas y ejecuta `docker compose up --build -d` desde la raíz. No borres el volumen `mysql_data` al detener los servicios.
 
 ## Validación y límites conocidos
-- No se encontraron pruebas automatizadas ni comandos de build configurados. No afirmes que las pruebas pasan si no existen o no se ejecutaron.
-- El frontend usa rutas relativas y Flask no sirve actualmente el HTML. Para que la interfaz llegue a la API, sirve ambos bajo el mismo origen o configura un proxy; no des por hecho que abrir el HTML directamente funcionará.
+- No se encontraron pruebas automatizadas. `docker compose config -q` valida la configuración y `docker compose build` construye las imágenes, pero ninguno sustituye pruebas de la aplicación.
+- Nginx sirve el frontend y reenvía `/api/` a Flask bajo el mismo origen. No des por hecho que abrir `frontend/index.html` directamente conectará con la API.
